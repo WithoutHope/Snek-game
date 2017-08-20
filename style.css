@@ -1,0 +1,23 @@
+body {
+	margin: 0;
+	padding:0;
+	background: #055;
+}
+table {
+	margin: auto;
+	margin-top: 100px;
+	background: gray;
+	border: 2px solid green;
+    border-collapse: collapse;
+}
+th {
+	background: #eee;
+	height: 5px;
+	width: 5px;
+	border: 1px solid lightgray;
+}
+button {
+	margin: 50px;
+	width: 40%;
+	height: 80px;
+}
