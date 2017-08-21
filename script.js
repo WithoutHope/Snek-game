@@ -62,7 +62,7 @@ function y_gen(){
 	console.log("gen....");
 }
 function n_gen(){
-	for(j = 1; j <= 2; j++){
+	for(j = 1; j <= 3; j++){
 		for(k = 0; k <= velikost; k++){
 			console.log("radek " + k + " ... " + field[(k)]);
 			for(l = 0; l <= velikost; l++){
@@ -105,7 +105,11 @@ function n_gen(){
 						}
 					}
 				}
+				else{
+					li_field[k][l] = 0;
+				}
 			}
 		}
 	}
+	console.log(li_field);
 }
