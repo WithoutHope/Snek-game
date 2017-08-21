@@ -69,19 +69,35 @@ function n_gen(){
 				if(j == 1){
 					var life_count = 0;
 					for(m = -1; m <= 1; m++){
-						if((k + m) >= 0 && (k + m ) <= velikost){
-							for(n = -1; n <= 1; n++){
-								if((l + n) >= 0 && (l + n) <= velikost){
-									if((k + m) !== k || (l + n) !== l){
-										if(field[(k + m)][(l + n)] === 1){
-											life_count++;
-											console.log("ja " + k + ", " + l + "\
-		 kontroluju: " + (k + m) + ", " + (l + n) + "\
-		 je tam? " + field[(k + m)][(l + n)] + "\
-		 mam spocitano " + life_count);
-											li_field[k][l] = life_count; //tenhle øádek dìlá potíže;
-										}
-									}
+						var updown_case;
+						var leftright_case;
+						if((k + m) < 0){
+							updown_case = velikost;
+						}
+						else if((k + m) > velikost){
+							updown_case = 0;
+						}
+						else{
+							updown_case = (k + m);
+						}
+						for(n = -1; n <= 1; n++){
+							if((l + n) < 0 ){
+								leftright_case = velikost;
+							}
+							else if((l + n) > velikost){
+								leftright_case = 0;				
+							}
+							else{
+								leftright_case = (l + n);		
+							}
+							if((k + m) !== k || (l + n) !== l){
+								if(field[updown_case][leftright_case] === 1){
+									life_count++;
+									console.log("ja " + k + ", " + l + "\
+						 kontroluju: " + (k + m) + ", " + (l + n) + "\
+						 je tam? " + field[updown_case][leftright_case] + "\
+						 mam spocitano " + life_count);
+									li_field[k][l] = life_count; //tenhle øádek dìlá potíže;
 								}
 							}
 						}
