@@ -1,4 +1,4 @@
-var msg1 = "velikost pole 0-100";
+var msg1 = "velikost pole 10-100. \nVychozi velikost je 20.";
 var field;
 var li_field;
 var velikost;
@@ -9,7 +9,7 @@ window.onload = function() {
         velikost = 99;
     }
     else if(c <= 9){
-        velikost = 9;
+        velikost = 20;
     }
     else{
         velikost = c-1;
