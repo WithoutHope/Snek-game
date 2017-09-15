@@ -1,6 +1,7 @@
 var msg1 = "velikost pole 10-100. \nVychozi velikost je 20.";
 var field;
 var li_field;
+var gen_speed = 200;
 var velikost;
 window.onload = function() {
     var tabulka = document.getElementById("tab");
@@ -34,12 +35,15 @@ window.onload = function() {
         }
     }
 };
+var pop = 0;
 function live(x, y){
 	var bunka = document.getElementById(x + "," + y);
 	bunka.style.background = "black";
 	bunka.removeAttribute("onclick");
 	bunka.setAttribute("onclick","die(" + x + ", " + y + ")");
 	field[x][y] = 1;
+	pop += 1;
+	document.getElementById("population").innerHTML = pop;
 	//console.log(field[x][y]);
 }
 function die(x, y){
@@ -48,17 +52,19 @@ function die(x, y){
 	bunka.removeAttribute("onclick");
 	bunka.setAttribute("onclick","live(" + x + ", " + y + ")");
 	field[x][y] = 0;
+	pop -= 1;
+	document.getElementById("population").innerHTML = pop;
 	//console.log(field[x][y]);
 }
 function x_gen(){
 	var limit = prompt("Generations..");
 	for(x = 1; x <= limit; x++){
-		setTimeout(n_gen,200*x);
+		setTimeout(n_gen,gen_speed*x);
 		console.log("gen....");
 	}
 }
 function y_gen(){
-	setInterval(n_gen,200);
+	setInterval(n_gen,gen_speed);
 	console.log("gen....");
 }
 function n_gen(){
@@ -128,4 +134,41 @@ function n_gen(){
 		}
 	}
 	console.log(li_field);
+}
+function r_gen(b){
+		var r_ch = prompt("More means more rare living dots.. 1=everything lives");
+    for (x = 0; x <= velikost; x++) {
+        for (y = 0; y <= velikost; y++) {
+						var r = Math.floor((Math.random() * r_ch) + 1);
+						if(r < 2) {
+							live(x, y);
+						}
+						if(b == 1) {
+							if(r >= 2) {
+								die(x, y);
+								pop += 1;
+							}
+						}
+        }
+    }	
+}
+function h_gen(){
+		var r_ch = prompt("More means more rare living dots.. 1=everything lives");
+    for (x = 0; x <= velikost; x++) {
+        for (y = 0; y <= velikost; y++) {
+						var r = Math.floor((Math.random() * r_ch) + 1);
+						if(r < 2) {
+							live(x, y);
+						}
+						if(b == 1) {
+							if(r >= 2) {
+								die(x, y);
+							}
+						}
+        }
+    }	
+}
+function s_gen(){
+		var s_ch = prompt(">50 recomended (in miliseconds)");
+    gen_speed = s_ch;
 }
