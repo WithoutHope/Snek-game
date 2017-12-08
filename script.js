@@ -1,174 +1,251 @@
-var msg1 = "velikost pole 10-100. \nVychozi velikost je 20.";
 var field;
-var li_field;
-var gen_speed = 200;
-var velikost;
-window.onload = function() {
-    var tabulka = document.getElementById("tab");
-	var c = prompt(msg1);
-    if (c >= 100){
-        velikost = 99;
-    }
-    else if(c <= 9){
-        velikost = 20;
-    }
-    else{
-        velikost = c-1;
-    }
-    field = new Array(velikost);
-    li_field = new Array(velikost);
-
-    for (x = 0; x <= velikost; x++) {
+var field_done = false;
+var current_move;
+var current_dir;
+var interval_speed = 200;
+function keyCode(event) {
+	var x = event.keyCode;
+	switch(x){
+		case 27://esc
+			console.log("You pressed the Escape key!");
+			break;
+		case 32://space
+			console.log("You pressed the spacebar!");
+			clearInterval(current_move);
+			console.log("cleared interval");
+			break;
+		case 13://enter
+			console.log("You pressed the enter!");
+			interval_speed = 800;
+			lifespan += 1;
+			if(field_done == false){
+				make_field();
+			}
+			else{
+			move(current_dir);
+			}
+			break;
+		case 119://w
+			current_dir = "up";
+			clearInterval(current_move);
+			console.log("cleared interval");
+			current_move = setInterval(move, interval_speed, "up");
+			move("up");
+			console.log("You go UP");
+			break;
+		case 97://a
+			current_dir = "left";
+			clearInterval(current_move);
+			console.log("cleared interval");
+			current_move = setInterval(move, interval_speed, "left");
+			move("left");
+			console.log("You go LEFT");
+			break;
+		case 115://s
+			current_dir = "down";
+			clearInterval(current_move);
+			console.log("cleared interval");
+			current_move = setInterval(move, interval_speed, "down");
+			move("down");
+			console.log("You go DOWN");
+			break;
+		case 100://d
+			current_dir = "right";
+			clearInterval(current_move);
+			console.log("cleared interval");
+			current_move = setInterval(move, interval_speed, "right");
+			move("right");
+			console.log("You go RIGHT");
+			break;
+		case 38://up
+			current_dir = "up";
+			clearInterval(current_move);
+			console.log("cleared interval");
+			current_move = setInterval(move, interval_speed, "up");
+			move("up");
+			console.log("You go UP");
+			break;
+		case 37://left
+			current_dir = "left";
+			clearInterval(current_move);
+			console.log("cleared interval");
+			current_move = setInterval(move, interval_speed, "left");
+			move("left");
+			console.log("You go LEFT");
+			break;
+		case 40://down
+			current_dir = "down";
+			clearInterval(current_move);
+			console.log("cleared interval");
+			current_move = setInterval(move, interval_speed, "down");
+			move("down");
+			console.log("You go DOWN");
+			break;
+		case 39://right
+			current_dir = "right";
+			clearInterval(current_move);
+			console.log("cleared interval");
+			current_move = setInterval(move, interval_speed, "right");
+			move("right");
+			console.log("You go RIGHT");
+			break;
+	}
+}
+var size = 16;
+function make_field(){
+		field_done = true;
+		document.getElementById("start").style.display = "none";
+		var grid = document.getElementById("grid");
+    field = new Array(size);
+    for (x = 0; x <= size; x++) {
         var trr = document.createElement("tr");
-        tabulka.appendChild(trr);
-        field[x] = new Array(velikost);
-        li_field[x] = new Array(velikost);
-
-        for (y = 0; y <= velikost; y++) {
+        grid.appendChild(trr);
+        field[x] = new Array(size);
+        for (y = 0; y <= size; y++) {
             var thh = document.createElement("th");
-            thh.setAttribute("onclick", "live(" + x + "," + y + ")");
             field[x][y] = 0;
-            li_field[x][y] = 0;
 			console.log(field[x][y] + "   vygenerováno");
 			thh.setAttribute("id",x + "," + y);
             trr.appendChild(thh);
         }
     }
-};
-var pop = 0;
-function live(x, y){
-	var bunka = document.getElementById(x + "," + y);
-	bunka.style.background = "black";
-	bunka.removeAttribute("onclick");
-	bunka.setAttribute("onclick","die(" + x + ", " + y + ")");
-	field[x][y] = 1;
-	pop += 1;
-	document.getElementById("population").innerHTML = pop;
-	//console.log(field[x][y]);
 }
-function die(x, y){
-	var bunka = document.getElementById(x + "," + y);
-	bunka.style.background = "#eee";
-	bunka.removeAttribute("onclick");
-	bunka.setAttribute("onclick","live(" + x + ", " + y + ")");
-	field[x][y] = 0;
-	pop -= 1;
-	document.getElementById("population").innerHTML = pop;
-	//console.log(field[x][y]);
-}
-function x_gen(){
-	var limit = prompt("Generations..");
-	for(x = 1; x <= limit; x++){
-		setTimeout(n_gen,gen_speed*x);
-		console.log("gen....");
+var img = document.getElementById("img");
+var pos_x = 0;
+var pos_y = 0;
+var lifespan = 2;
+var food_eaten = true;
+var aging = 1;
+function move(dir){
+	var field_now = document.getElementById(pos_x + "," + pos_y);
+	switch(dir){
+		case "up":
+			var pos_x_after = pos_x -1;
+			if (pos_x_after >= 0){
+				//field_now.style.background = "#aaf";
+				pos_x--;
+				field_now = document.getElementById(pos_x + "," + pos_y);
+				//field_now.style.background = "green";
+				console.log("Jsi na x " + pos_x);
+				let random_img = Math.floor((Math.random() * 3)+1);
+				img.setAttribute("src", "grafics/move_" + random_img + ".png");
+			}
+			else{
+				img.setAttribute("src", "grafics/wall.png");
+			}
+			if(field[pos_x_after][pos_y] > 100){
+				lifespan += 2;
+				food_eaten = true;
+				img.setAttribute("src", "grafics/eat.png");
+			}
+			else if(field[pos_x_after][pos_y] > 1 && field[pos_x_after][pos_y] < 101){
+				lifespan -= 2;
+				aging = 2;
+				img.setAttribute("src", "grafics/eat_ys.png");
+			}
+			break;
+		case "down":
+			var pos_x_after = pos_x +1;
+			if (pos_x_after <= size){
+				//field_now.style.background = "#aaf";
+				pos_x++;
+				field_now = document.getElementById(pos_x + "," + pos_y);
+				//field_now.style.background = "green";
+				console.log("Jsi na x " + pos_x);
+				let random_img = Math.floor((Math.random() * 3)+1);
+				img.setAttribute("src", "grafics/move_" + random_img + ".png");
+			}
+			else{
+				img.setAttribute("src", "grafics/wall.png");
+			}
+			if(field[pos_x_after][pos_y] > 100){
+				lifespan += 1;
+				food_eaten = true;
+				img.setAttribute("src", "grafics/eat.png");
+			}
+			else if(field[pos_x_after][pos_y] > 1 && field[pos_x_after][pos_y] < 101){
+				lifespan -= 2;
+				aging = 2;
+				img.setAttribute("src", "grafics/eat_ys.png");
+			}
+			break;
+		case "left":
+			var pos_y_after = pos_y -1;
+			if (pos_y_after >= 0){
+				//field_now.style.background = "#aaf";
+				pos_y--;
+				field_now = document.getElementById(pos_x + "," + pos_y);
+				//field_now.style.background = "green";
+				console.log("Jsi na y " + pos_y);
+				let random_img = Math.floor((Math.random() * 3)+1);
+				img.setAttribute("src", "grafics/move_" + random_img + ".png");
+			}
+			else{
+				img.setAttribute("src", "grafics/wall.png");
+			}
+			if(field[pos_x][pos_y_after] > 100){
+				lifespan += 2;
+				food_eaten = true;
+				img.setAttribute("src", "grafics/eat.png");
+			}
+			else if(field[pos_x][pos_y_after] > 1 && field[pos_x][pos_y_after] < 101){
+				lifespan -= 2;
+				aging = 2;
+				img.setAttribute("src", "grafics/eat_ys.png");
+			}
+			break;
+		case "right":
+			var pos_y_after = pos_y +1;
+			if (pos_y_after <= size){
+				//field_now.style.background = "#aaf";
+				pos_y++;
+				field_now = document.getElementById(pos_x + "," + pos_y);
+				//field_now.style.background = "green";
+				console.log("Jsi na y " + pos_y);
+				let random_img = Math.floor((Math.random() * 3)+1);
+				img.setAttribute("src", "grafics/move_" + random_img + ".png");
+			}
+			else{
+				img.setAttribute("src", "grafics/wall.png");
+			}
+			if(field[pos_x][pos_y_after] > 100){
+				lifespan += 2;
+				food_eaten = true;
+				img.setAttribute("src", "grafics/eat.png");
+			}
+			else if(field[pos_x][pos_y_after] > 1 && field[pos_x][pos_y_after] < 101){
+				lifespan -= 2;
+				aging = 2;
+				img.setAttribute("src", "grafics/eat_ys.png");
+			}
+			break;
 	}
-}
-function y_gen(){
-	setInterval(n_gen,gen_speed);
-	console.log("gen....");
-}
-function n_gen(){
-	for(j = 1; j <= 3; j++){
-		for(k = 0; k <= velikost; k++){
-			console.log("radek " + k + " ... " + field[(k)]);
-			for(l = 0; l <= velikost; l++){
-				if(j == 1){
-					var life_count = 0;
-					for(m = -1; m <= 1; m++){
-						var updown_case;
-						var leftright_case;
-						if((k + m) < 0){
-							updown_case = velikost;
-						}
-						else if((k + m) > velikost){
-							updown_case = 0;
-						}
-						else{
-							updown_case = (k + m);
-						}
-						for(n = -1; n <= 1; n++){
-							if((l + n) < 0 ){
-								leftright_case = velikost;
-							}
-							else if((l + n) > velikost){
-								leftright_case = 0;				
-							}
-							else{
-								leftright_case = (l + n);		
-							}
-							if((k + m) !== k || (l + n) !== l){
-								if(field[updown_case][leftright_case] === 1){
-									life_count++;
-									console.log("ja " + k + ", " + l + "\
-						 kontroluju: " + (k + m) + ", " + (l + n) + "\
-						 je tam? " + field[updown_case][leftright_case] + "\
-						 mam spocitano " + life_count);
-									li_field[k][l] = life_count; //tenhle øádek dìlá potíže;
-								}
-							}
-						}
-					}
-				}
-				else if(j === 2){
-					if(field[k][l] === 1){
-						if(li_field[k][l] < 2){
-							console.log("umírá políèko: " + k + ", " + l + "málo sousedù...");
-							die(k,l);
-						}
-						else if(li_field[k][l] > 3){
-							console.log("umírá políèko: " + k + ", " + l + "pøemnoženo");
-							die(k,l);
-						}
-					}
-					else if(field[k][l] === 0){
-						if(li_field[k][l] === 3){
-							console.log("narodilo se políèko: " + k + ", " + l);
-							live(k,l);
-						}
-					}
-				}
-				else{
-					li_field[k][l] = 0;
-				}
+	field[pos_x][pos_y] = lifespan;
+	console.log(field[pos_x][pos_y]);
+	for (x = 0; x <= size; x++) {
+		for (y = 0; y <= size; y++) {
+			field[x][y] -= aging;
+			console.log(field[x][y] + "   odebráno");
+			if(field[x][y] < 1){
+				document.getElementById(x + "," + y).style.background = "#ffffff";
+			}
+			else if(field[x][y] > 0 && field[x][y] < 100 ){
+				document.getElementById(x + "," + y).style.background = "blue";
 			}
 		}
 	}
-	console.log(li_field);
-}
-function r_gen(b){
-		var r_ch = prompt("More means more rare living dots.. 1=everything lives");
-    for (x = 0; x <= velikost; x++) {
-        for (y = 0; y <= velikost; y++) {
-						var r = Math.floor((Math.random() * r_ch) + 1);
-						if(r < 2) {
-							live(x, y);
-						}
-						if(b == 1) {
-							if(r >= 2) {
-								die(x, y);
-								pop += 1;
-							}
-						}
-        }
-    }	
-}
-function h_gen(){
-		var r_ch = prompt("More means more rare living dots.. 1=everything lives");
-    for (x = 0; x <= velikost; x++) {
-        for (y = 0; y <= velikost; y++) {
-						var r = Math.floor((Math.random() * r_ch) + 1);
-						if(r < 2) {
-							live(x, y);
-						}
-						if(b == 1) {
-							if(r >= 2) {
-								die(x, y);
-							}
-						}
-        }
-    }	
-}
-function s_gen(){
-		var s_ch = prompt(">50 recomended (in miliseconds)");
-    gen_speed = s_ch;
+	aging = 1;
+	if (food_eaten == true) {
+		var food_x;
+		var food_y;
+		do {
+			food_x = Math.floor((Math.random() * size));
+			food_y = Math.floor((Math.random() * size));
+			console.log("generuju bobuli");
+		}
+		while (field[food_x][food_y] > 0);
+		field[food_x][food_y] = 1000000;
+		document.getElementById(food_x + "," + food_y).style.background = "red";
+		food_eaten = false;
+	}
 }

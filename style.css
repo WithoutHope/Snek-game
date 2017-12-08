@@ -1,28 +1,22 @@
-﻿body {
-	margin: 0;
-	padding:0;
-	background: #077;
+h3 {
+	margin: auto;
+}
+#view {
+	width: 320px;
+	height: 160px;
+	overflow: hidden;
+	border: solid red 2px;
+	margin: auto;
 }
 table {
-	margin: auto;
-	margin-top: 100px;
-	border: 1px solid lightgray;
-    border-collapse: collapse;
+	border: solid green 1px;
 }
 th {
-	background: #eee;
-	height: 5px;
-	width: 5px;
-	border: 1px solid lightgray;
+	width: 30px;
+	height: 30px;
+	border: dotted red 1px;
 }
-#but_menu{
-	margin-left: 10%;
-	max-width: 250px;
-}
-button {
-	margin: 30px;
-	margin-bottom: -20px;
-	width: 240px;
-	height: 50px;
-	font-size: 1.4em;
+img {
+	border: solid green 1px;
+	margin-top: 1px;
 }

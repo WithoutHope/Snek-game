@@ -1,24 +1,15 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-<meta charset="utf-8">
+<meta charset="windows-1250">
+<title>rundommm</title>
 <link rel="stylesheet" href="style.css">
-<script type="text/javascript" src="script.js"></script>
-<title>Game of life</title>
 </head>
-<body>
-<h1>život..</h1>
-<h2 id="population"></h2>
-<table id="tab"></table>
-<div id="but_menu">
-	<button onclick="n_gen()">Next generation</button>
-	<button onclick="x_gen()">Next x generations</button>
-	<button onclick="y_gen()">Unstopable evolution</button> 
-	<button onclick="r_gen(0)">Generate random field (addition)</button>
-	<button onclick="r_gen(1)">Generate random field (rewrite)</button>
-	<button onclick="s_gen()">Set speed</button>	
-	<button onclick="h_gen()">Hover mode</button>	
-</div>
+<body onkeydown="keyCode(event)">
+<h3 id="start">Press enter to start</h3>
+<table id="grid">
+</table>
+<img id="img" src="" />
+<script src="script.js"></script>
 </body>
 </html>
-
