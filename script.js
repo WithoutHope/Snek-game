@@ -2,7 +2,8 @@ var field;
 var field_done = false;
 var current_move;
 var current_dir;
-var interval_speed = 200;
+var interval_speed;
+var sidescroll;
 function keyCode(event) {
 	var x = event.keyCode;
 	switch(x){
@@ -16,7 +17,13 @@ function keyCode(event) {
 			break;
 		case 13://enter
 			console.log("You pressed the enter!");
-			interval_speed = 800;
+			if (document.getElementById("sidescroll_in").checked == true){
+				sidescroll = true;
+			}
+			else {
+				sidescroll = false;
+			}
+			interval_speed = 400;
 			lifespan += 1;
 			if(field_done == false){
 				make_field();
@@ -132,6 +139,12 @@ function move(dir){
 			}
 			else{
 				img.setAttribute("src", "grafics/wall.png");
+				if(sidescroll = false) {
+					pos_x--;
+				}
+				else {
+					pos_x = size+1;
+				}
 			}
 			if(field[pos_x_after][pos_y] > 100){
 				lifespan += 2;
@@ -157,6 +170,12 @@ function move(dir){
 			}
 			else{
 				img.setAttribute("src", "grafics/wall.png");
+				if(sidescroll = false) {
+					pos_x++;
+				}
+				else {
+					pos_x = -1;
+				}
 			}
 			if(field[pos_x_after][pos_y] > 100){
 				lifespan += 1;
@@ -182,6 +201,12 @@ function move(dir){
 			}
 			else{
 				img.setAttribute("src", "grafics/wall.png");
+				if(sidescroll = false) {
+					pos_y--;
+				}
+				else {
+					pos_y = size+1;
+				}
 			}
 			if(field[pos_x][pos_y_after] > 100){
 				lifespan += 2;
@@ -207,6 +232,12 @@ function move(dir){
 			}
 			else{
 				img.setAttribute("src", "grafics/wall.png");
+				if(sidescroll = false) {
+					pos_y++;
+				}
+				else {
+					pos_y = 0;
+				}
 			}
 			if(field[pos_x][pos_y_after] > 100){
 				lifespan += 2;
